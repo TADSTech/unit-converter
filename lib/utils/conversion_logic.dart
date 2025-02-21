@@ -127,10 +127,10 @@ class Converter {
   // BMI calculation
   static String calculateBMI(double weight, double height) {
     if (height <= 0) {
-      throw ArgumentError("Height must be greater than zero.");
+      throw ArgumentError('Height must be greater than zero.');
     }
     if (weight <= 0) {
-      throw ArgumentError("Weight must be greater than zero.");
+      throw ArgumentError('Weight must be greater than zero.');
     }
     double bmi = weight / ((height / 100) * (height / 100)); // Convert height to meters
     return bmi.toStringAsFixed(2);

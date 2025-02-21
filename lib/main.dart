@@ -10,7 +10,7 @@ void main() async {
 }
 
 class UnitConverterApp extends StatelessWidget {
-  const UnitConverterApp({Key? key}) : super(key: key);
+  const UnitConverterApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +55,7 @@ class UnitConverterApp extends StatelessWidget {
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   _HomePageState createState() => _HomePageState();
