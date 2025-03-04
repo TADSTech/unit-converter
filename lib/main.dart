@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'utils/conversion_logic.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'utils/conversion_logic.dart';
 
 void main() async {
   await dotenv.load(fileName: '.env');
@@ -27,8 +28,7 @@ class UnitConverterApp extends StatelessWidget {
         dropdownMenuTheme: DropdownMenuThemeData(
           menuStyle: MenuStyle(
             elevation: WidgetStateProperty.all(4),
-            backgroundColor: WidgetStateProperty.all(
-                Colors.white70),
+            backgroundColor: WidgetStateProperty.all(Colors.white70),
           ),
         ),
         textTheme: GoogleFonts.poppinsTextTheme(),
@@ -38,14 +38,12 @@ class UnitConverterApp extends StatelessWidget {
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16, vertical: 14),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.symmetric(vertical: 16),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           ),
         ),
       ),
@@ -59,12 +57,9 @@ class HomePage extends StatefulWidget {
 
   @override
   _HomePageState createState() => _HomePageState();
-
 }
 
 class _HomePageState extends State<HomePage> {
-
-
   late TextEditingController inputController;
   late TextEditingController weightController;
   late TextEditingController heightController;
@@ -95,7 +90,6 @@ class _HomePageState extends State<HomePage> {
   String selectedInputUnit = 'Meters (m)';
   String selectedOutputUnit = 'Kilometers (km)';
   String convertedValue = 'N/A';
-
 
   final List<String> conversionOptions = [
     'Length',
@@ -158,38 +152,22 @@ class _HomePageState extends State<HomePage> {
       'EGP (E£)',
       'NGN (₦)',
     ],
-    'Area': [
-      'Square Meters (m²)',
-      'Square Kilometers (km²)',
-      'Hectares (ha)',
-      'Acres'
-    ],
+    'Area': ['Square Meters (m²)', 'Square Kilometers (km²)', 'Hectares (ha)', 'Acres'],
     'Time': ['Seconds (s)', 'Minutes (min)', 'Hours (h)', 'Days'],
     'Data': ['Bytes (B)', 'Kilobytes (KB)', 'Megabytes (MB)', 'Gigabytes (GB)'],
     'Discount': ['Original Price', 'Discount Percentage', 'Final Price'],
-    'Volume': [
-      'Liters (L)',
-      'Milliliters (mL)',
-      'Cubic Meters (m³)',
-      'Gallons'
-    ],
+    'Volume': ['Liters (L)', 'Milliliters (mL)', 'Cubic Meters (m³)', 'Gallons'],
     'Numeral System': ['Binary', 'Decimal', 'Hexadecimal', 'Octal'],
-    'Speed': [
-      'Meters per second (m/s)',
-      'Kilometers per hour (km/h)',
-      'Miles per hour (mph)'
-    ],
+    'Speed': ['Meters per second (m/s)', 'Kilometers per hour (km/h)', 'Miles per hour (mph)'],
     'BMI': ['Weight (kg)', 'Height (cm)', 'BMI'],
   };
-
 
   void convert() async {
     final input = double.tryParse(inputController.text) ?? 0.0;
     final weight = double.tryParse(weightController.text) ?? 0.0;
     final height = double.tryParse(heightController.text) ?? 0.0;
     final originalPrice = double.tryParse(originalPriceController.text) ?? 0.0;
-    final discountPercentage = double.tryParse(
-        discountPercentageController.text) ?? 0.0;
+    final discountPercentage = double.tryParse(discountPercentageController.text) ?? 0.0;
 
     setState(() {
       convertedValue = 'Converting...';
@@ -199,29 +177,23 @@ class _HomePageState extends State<HomePage> {
       String result;
       switch (selectedConversion) {
         case 'Length':
-          result = Converter.convertLength(
-              input, selectedInputUnit, selectedOutputUnit);
+          result = Converter.convertLength(input, selectedInputUnit, selectedOutputUnit);
           break;
         case 'Temperature':
-          result = Converter.convertTemperature(
-              input, selectedInputUnit, selectedOutputUnit);
+          result = Converter.convertTemperature(input, selectedInputUnit, selectedOutputUnit);
           break;
         case 'Mass':
-          result = Converter.convertMass(
-              input, selectedInputUnit, selectedOutputUnit);
+          result = Converter.convertMass(input, selectedInputUnit, selectedOutputUnit);
           break;
         case 'Time':
-          result = Converter.convertTime(
-              input, selectedInputUnit, selectedOutputUnit);
+          result = Converter.convertTime(input, selectedInputUnit, selectedOutputUnit);
           break;
         case 'Speed':
-          result = Converter.convertSpeed(
-              input, selectedInputUnit, selectedOutputUnit);
+          result = Converter.convertSpeed(input, selectedInputUnit, selectedOutputUnit);
           break;
         case 'Currency':
           try {
-            result = await Converter.convertCurrency(
-                input, selectedInputUnit, selectedOutputUnit);
+            result = await Converter.convertCurrency(input, selectedInputUnit, selectedOutputUnit);
           } catch (e) {
             result = 'Failed to fetch rates';
           }
@@ -230,20 +202,16 @@ class _HomePageState extends State<HomePage> {
           result = Converter.calculateBMI(weight, height);
           break;
         case 'Area':
-          result = Converter.convertArea(
-              input, selectedInputUnit, selectedOutputUnit);
+          result = Converter.convertArea(input, selectedInputUnit, selectedOutputUnit);
           break;
         case 'Discount':
-          result =
-              Converter.calculateDiscount(originalPrice, discountPercentage);
+          result = Converter.calculateDiscount(originalPrice, discountPercentage);
           break;
         case 'Data':
-          result = Converter.convertData(
-              input, selectedInputUnit, selectedOutputUnit);
+          result = Converter.convertData(input, selectedInputUnit, selectedOutputUnit);
           break;
         case 'Volume':
-          result = Converter.convertVolume(
-              input, selectedInputUnit, selectedOutputUnit);
+          result = Converter.convertVolume(input, selectedInputUnit, selectedOutputUnit);
           break;
         case 'Numeral System':
           result = Converter.convertNumeralSystem(
@@ -280,18 +248,12 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Unit Converter',
-            style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
-                fontSize: 20)),
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 20)),
         centerTitle: true,
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [
-                colorScheme.primary,
-                colorScheme.secondary
-              ],
+              colors: [colorScheme.primary, colorScheme.secondary],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -312,8 +274,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             Card(
               elevation: 2,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
@@ -321,9 +282,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Text('Current Conversion',
                         style: TextStyle(
-                            color: colorScheme.primary,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500)),
+                            color: colorScheme.primary, fontSize: 14, fontWeight: FontWeight.w500)),
                     const SizedBox(height: 8),
                     AnimatedSwitcher(
                       duration: const Duration(milliseconds: 300),
@@ -345,7 +304,11 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(width: 16),
                 Icon(Icons.arrow_forward, color: colorScheme.primary),
                 const SizedBox(width: 16),
-                Expanded(child: _buildUnitDropdown('To', selectedOutputUnit,)),
+                Expanded(
+                    child: _buildUnitDropdown(
+                  'To',
+                  selectedOutputUnit,
+                )),
               ],
             ),
             const SizedBox(height: 24),
@@ -369,7 +332,8 @@ class _HomePageState extends State<HomePage> {
                     icon: Icon(Icons.autorenew,
                         size: MediaQuery.of(context).size.width < 800 ? 20 : 24),
                     label: Text('Convert',
-                        style: TextStyle(fontSize: MediaQuery.of(context).size.width < 800 ? 16 : 18)),
+                        style:
+                            TextStyle(fontSize: MediaQuery.of(context).size.width < 800 ? 16 : 18)),
                     style: FilledButton.styleFrom(
                       backgroundColor: colorScheme.primary,
                       foregroundColor: Colors.white,
@@ -381,10 +345,11 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(width: 16),
                 Expanded(
                   child: OutlinedButton.icon(
-                    icon: Icon(Icons.clear, size: MediaQuery.of(context).size.width < 800 ? 20 : 24),
+                    icon:
+                        Icon(Icons.clear, size: MediaQuery.of(context).size.width < 800 ? 20 : 24),
                     label: Text('Clear',
-                        style: TextStyle(fontSize: MediaQuery.of(context).size.width < 800 ? 16 : 18)),
-
+                        style:
+                            TextStyle(fontSize: MediaQuery.of(context).size.width < 800 ? 16 : 18)),
                     onPressed: clearInputs,
                     style: OutlinedButton.styleFrom(
                       foregroundColor: colorScheme.secondary,
@@ -400,27 +365,23 @@ class _HomePageState extends State<HomePage> {
               duration: const Duration(milliseconds: 300),
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: colorScheme.primary.withOpacity(0.1),
+                color: colorScheme.primary.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: colorScheme.primary.withOpacity(0.2)),
+                border: Border.all(color: colorScheme.primary.withValues(alpha: 0.2)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Result',
                       style: TextStyle(
-                          color: colorScheme.primary,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500)),
+                          color: colorScheme.primary, fontSize: 14, fontWeight: FontWeight.w500)),
                   const SizedBox(height: 8),
                   AnimatedSwitcher(
                     duration: const Duration(milliseconds: 200),
                     child: Text(convertedValue,
                         key: ValueKey(convertedValue),
                         style: TextStyle(
-                            color: colorScheme.primary,
-                            fontSize: 24,
-                            fontWeight: FontWeight.w600)),
+                            color: colorScheme.primary, fontSize: 24, fontWeight: FontWeight.w600)),
                   ),
                 ],
               ),
@@ -430,6 +391,7 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
   Widget _buildDrawer(ColorScheme colorScheme) {
     return Drawer(
       child: Column(
@@ -448,14 +410,10 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Text('Conversions',
                     style: GoogleFonts.poppins(
-                        color: Colors.white,
-                        fontSize: 24,
-                        fontWeight: FontWeight.w600)),
+                        color: Colors.white, fontSize: 24, fontWeight: FontWeight.w600)),
                 const SizedBox(height: 8),
                 Text('${conversionOptions.length} categories available',
-                    style: TextStyle(
-                        color: Colors.white.withOpacity(0.9),
-                        fontSize: 14)),
+                    style: TextStyle(color: Colors.white.withValues(alpha: 0.9), fontSize: 14)),
               ],
             ),
           ),
@@ -466,21 +424,20 @@ class _HomePageState extends State<HomePage> {
               itemBuilder: (context, index) {
                 final option = conversionOptions[index];
                 return ListTile(
-                    leading: Icon(_getIconForCategory(option)), // Added missing )
-                    title: Text(option),
-                tileColor: selectedConversion == option
-                ? colorScheme.primary.withOpacity(0.1)
-                    : null,
-                shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8)),
-                onTap: () {
-                setState(() {
-                selectedConversion = option;
-                selectedInputUnit = unitOptions[option]!.first;
-                selectedOutputUnit = unitOptions[option]!.last;
-                });
-                Navigator.pop(context);
-                },
+                  leading: Icon(_getIconForCategory(option)), // Added missing )
+                  title: Text(option),
+                  tileColor: selectedConversion == option
+                      ? colorScheme.primary.withValues(alpha: 0.1)
+                      : null,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  onTap: () {
+                    setState(() {
+                      selectedConversion = option;
+                      selectedInputUnit = unitOptions[option]!.first;
+                      selectedOutputUnit = unitOptions[option]!.last;
+                    });
+                    Navigator.pop(context);
+                  },
                 );
               },
             ),
@@ -524,15 +481,16 @@ class _HomePageState extends State<HomePage> {
           value: value,
           isExpanded: true, // Crucial for proper width management
           items: unitOptions[selectedConversion]?.map((unit) {
-            return DropdownMenuItem(
-              value: unit,
-              child: Text(unit,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                      fontSize: isMobile ? 12 : 14, // Smaller text
-                      fontWeight: FontWeight.w500)),
-            );
-          }).toList() ?? [],
+                return DropdownMenuItem(
+                  value: unit,
+                  child: Text(unit,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          fontSize: isMobile ? 12 : 14, // Smaller text
+                          fontWeight: FontWeight.w500)),
+                );
+              }).toList() ??
+              [],
           onChanged: (value) => setState(() {
             if (label == 'From') {
               selectedInputUnit = value!;
@@ -541,14 +499,11 @@ class _HomePageState extends State<HomePage> {
             }
           }),
           decoration: InputDecoration(
-            contentPadding: EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: isMobile ? 10 : 12
-            ),
+            contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: isMobile ? 10 : 12),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.primary.withOpacity(0.3)),
+              borderSide:
+                  BorderSide(color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3)),
             ),
           ),
           menuMaxHeight: MediaQuery.of(context).size.height * 0.5,
@@ -564,42 +519,26 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildInputCard(String label, TextEditingController controller,
-      {bool isNumber = true}) {
+  Widget _buildInputCard(String label, TextEditingController controller, {bool isNumber = true}) {
     final isMobile = MediaQuery.of(context).size.width < 600;
 
     return TextField(
       controller: controller,
       decoration: InputDecoration(
         labelText: label,
-        prefixIcon: Icon(isNumber ? Icons.numbers : Icons.text_snippet,
-            size: isMobile ? 18 : 22),
+        prefixIcon: Icon(isNumber ? Icons.numbers : Icons.text_snippet, size: isMobile ? 18 : 22),
         filled: true,
-        contentPadding: EdgeInsets.symmetric(
-            vertical: isMobile ? 12 : 14,
-            horizontal: 12
-        ),
+        contentPadding: EdgeInsets.symmetric(vertical: isMobile ? 12 : 14, horizontal: 12),
         labelStyle: TextStyle(
             fontSize: isMobile ? 12 : 14,
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8)),
+            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.8)),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
         ),
       ),
-      keyboardType: isNumber
-          ? TextInputType.numberWithOptions(decimal: true)
-          : TextInputType.text,
-
-      style: TextStyle(
-          fontSize: isMobile ? 14 : 16,
-          fontWeight: FontWeight.w500),
-      inputFormatters: isNumber
-          ? [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*'))]
-          : null,
+      keyboardType: isNumber ? TextInputType.numberWithOptions(decimal: true) : TextInputType.text,
+      style: TextStyle(fontSize: isMobile ? 14 : 16, fontWeight: FontWeight.w500),
+      inputFormatters: isNumber ? [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*'))] : null,
     );
   }
-
 }
-
-
-

@@ -1,6 +1,7 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
 
 class Converter {
   // Map full unit names to abbreviated codes
@@ -38,6 +39,25 @@ class Converter {
     'Gallons': 'GAL',
   };
 
+  // Helper method to convert units using a conversion rate map
+  static String _convertUnits(
+      double input, String fromUnit, String toUnit, Map<String, double> conversionRates) {
+    String fromCode = unitAbbreviations[fromUnit] ?? '';
+    String toCode = unitAbbreviations[toUnit] ?? '';
+
+    if (fromCode.isEmpty || toCode.isEmpty) {
+      return 'Invalid units';
+    }
+
+    if (!conversionRates.containsKey(fromCode) || !conversionRates.containsKey(toCode)) {
+      return 'Conversion not supported';
+    }
+
+    double baseValue = input / conversionRates[fromCode]!;
+    double result = baseValue * conversionRates[toCode]!;
+    return '${result.toStringAsFixed(2)} $toUnit';
+  }
+
   // Length conversion: input is in meters
   static String convertLength(double input, String fromUnit, String toUnit) {
     const conversionRates = {
@@ -47,18 +67,17 @@ class Converter {
       'YARD': 1.09361,
     };
 
-    String fromCode = unitAbbreviations[fromUnit] ?? 'M';
-    String toCode = unitAbbreviations[toUnit] ?? 'M';
-
-    double baseValue = input / (conversionRates[fromCode] ?? 1.0);
-    double result = baseValue * (conversionRates[toCode] ?? 1.0);
-    return '${result.toStringAsFixed(2)} $toUnit';
+    return _convertUnits(input, fromUnit, toUnit, conversionRates);
   }
 
   // Temperature conversion
   static String convertTemperature(double input, String fromUnit, String toUnit) {
-    String fromCode = unitAbbreviations[fromUnit] ?? 'C';
-    String toCode = unitAbbreviations[toUnit] ?? 'C';
+    String fromCode = unitAbbreviations[fromUnit] ?? '';
+    String toCode = unitAbbreviations[toUnit] ?? '';
+
+    if (fromCode.isEmpty || toCode.isEmpty) {
+      return 'Invalid units';
+    }
 
     if (fromCode == 'C' && toCode == 'F') {
       return '${((input * 9 / 5) + 32).toStringAsFixed(2)} $toUnit';
@@ -82,12 +101,7 @@ class Converter {
       'OZ': 35.274,
     };
 
-    String fromCode = unitAbbreviations[fromUnit] ?? 'KG';
-    String toCode = unitAbbreviations[toUnit] ?? 'KG';
-
-    double baseValue = input / (conversionRates[fromCode] ?? 1.0);
-    double result = baseValue * (conversionRates[toCode] ?? 1.0);
-    return '${result.toStringAsFixed(2)} $toUnit';
+    return _convertUnits(input, fromUnit, toUnit, conversionRates);
   }
 
   // Time conversion: input is in seconds
@@ -99,12 +113,7 @@ class Converter {
       'DAY': 1 / 86400.0,
     };
 
-    String fromCode = unitAbbreviations[fromUnit] ?? 'S';
-    String toCode = unitAbbreviations[toUnit] ?? 'S';
-
-    double baseValue = input / (conversionRates[fromCode] ?? 1.0);
-    double result = baseValue * (conversionRates[toCode] ?? 1.0);
-    return '${result.toStringAsFixed(2)} $toUnit';
+    return _convertUnits(input, fromUnit, toUnit, conversionRates);
   }
 
   // Speed conversion: input is in meters per second
@@ -116,21 +125,16 @@ class Converter {
       'KNOT': 1.94384,
     };
 
-    String fromCode = unitAbbreviations[fromUnit] ?? 'M/S';
-    String toCode = unitAbbreviations[toUnit] ?? 'M/S';
-
-    double baseValue = input / (conversionRates[fromCode] ?? 1.0);
-    double result = baseValue * (conversionRates[toCode] ?? 1.0);
-    return '${result.toStringAsFixed(2)} $toUnit';
+    return _convertUnits(input, fromUnit, toUnit, conversionRates);
   }
 
   // BMI calculation
   static String calculateBMI(double weight, double height) {
     if (height <= 0) {
-      throw ArgumentError('Height must be greater than zero.');
+      return 'Height must be greater than zero.';
     }
     if (weight <= 0) {
-      throw ArgumentError('Weight must be greater than zero.');
+      return 'Weight must be greater than zero.';
     }
     double bmi = weight / ((height / 100) * (height / 100)); // Convert height to meters
     return bmi.toStringAsFixed(2);
@@ -145,12 +149,7 @@ class Converter {
       'ACRE': 0.000247105,
     };
 
-    String fromCode = unitAbbreviations[fromUnit] ?? 'M²';
-    String toCode = unitAbbreviations[toUnit] ?? 'M²';
-
-    double baseValue = input / (conversionRates[fromCode] ?? 1.0);
-    double result = baseValue * (conversionRates[toCode] ?? 1.0);
-    return '${result.toStringAsFixed(2)} $toUnit';
+    return _convertUnits(input, fromUnit, toUnit, conversionRates);
   }
 
   // Discount calculation
@@ -172,12 +171,7 @@ class Converter {
       'GB': 1 / (1024 * 1024 * 1024),
     };
 
-    String fromCode = unitAbbreviations[fromUnit] ?? 'B';
-    String toCode = unitAbbreviations[toUnit] ?? 'B';
-
-    double baseValue = input / (conversionRates[fromCode] ?? 1.0);
-    double result = baseValue * (conversionRates[toCode] ?? 1.0);
-    return '${result.toStringAsFixed(2)} $toUnit';
+    return _convertUnits(input, fromUnit, toUnit, conversionRates);
   }
 
   // Volume conversion: input is in liters
@@ -189,12 +183,7 @@ class Converter {
       'GAL': 0.264172,
     };
 
-    String fromCode = unitAbbreviations[fromUnit] ?? 'L';
-    String toCode = unitAbbreviations[toUnit] ?? 'L';
-
-    double baseValue = input / (conversionRates[fromCode] ?? 1.0);
-    double result = baseValue * (conversionRates[toCode] ?? 1.0);
-    return '${result.toStringAsFixed(2)} $toUnit';
+    return _convertUnits(input, fromUnit, toUnit, conversionRates);
   }
 
   // Numeral system conversion
@@ -230,7 +219,8 @@ class Converter {
   }
 
   // Currency conversion using ExchangeRate-API
-  static Future<String> convertCurrency(double amount, String fromCurrency, String toCurrency) async {
+  static Future<String> convertCurrency(
+      double amount, String fromCurrency, String toCurrency) async {
     try {
       final apiKey = dotenv.env['API_KEY']; // Load API key from .env file
       if (apiKey == null) {
@@ -238,7 +228,8 @@ class Converter {
       }
 
       // Extract currency codes (e.g., "USD (\$)" -> "USD")
-      final fromCode = fromCurrency.replaceAll(RegExp(r'[^A-Z]'), ''); // Remove non-uppercase letters
+      final fromCode =
+          fromCurrency.replaceAll(RegExp(r'[^A-Z]'), ''); // Remove non-uppercase letters
       final toCode = toCurrency.replaceAll(RegExp(r'[^A-Z]'), ''); // Remove non-uppercase letters
 
       final response = await http.get(
@@ -257,7 +248,7 @@ class Converter {
         double convertedAmount = amount * toRate;
         return '${convertedAmount.toStringAsFixed(2)} $toCurrency'; // Include the full unit name
       } else {
-        throw Exception('Failed to load exchange rates');
+        throw Exception('Failed to load exchange rates: ${response.statusCode}');
       }
     } catch (e) {
       return 'Error: $e';

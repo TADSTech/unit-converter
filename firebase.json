@@ -1,22 +1,7 @@
 {
   "hosting": [
     {
-      "site": "flutterlenz",
-      "public": "build/web",
-      "ignore": [
-        "firebase.json",
-        "**/.*",
-        "**/node_modules/**"
-      ],
-      "rewrites": [
-        {
-          "source": "**",
-          "destination": "/index.html"
-        }
-      ]
-    },
-    {
-      "site": "freelenz-unit-converter",
+      "site": "unitcalculator",
       "public": "build/web",
       "ignore": [
         "firebase.json",
